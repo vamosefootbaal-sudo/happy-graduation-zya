@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Special Celebration ✨</title>
-    <!-- Font Klasik & Elegan -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    
+
     <style>
         :root {
             --bg-dark: #0d0d11;
             --card-dark: #16161f;
-            --gold: #d4af37;
+            --gold: #dfaf37;
             --gold-hover: #f3e5ab;
             --text-light: #f5f5f7;
             --text-muted: #a0a0a5;
@@ -34,7 +33,7 @@
         .bg-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, rgba(22, 22, 31, 0.2) 0%, rgba(13, 13, 17, 0.9) 100%);
+            background: radial-gradient(circle at center, rgba(22, 22, 31, 0.7) 0%, rgba(13, 13, 17, 0.9) 100%);
             z-index: -2;
         }
 
@@ -62,7 +61,7 @@
         }
         .curtain-left { transform: translateX(-100%); }
         .curtain-right { transform: translateX(100%); }
-        
+
         .curtain-container.active .curtain-left { transform: translateX(0); }
         .curtain-container.active .curtain-right { transform: translateX(0); }
 
@@ -74,185 +73,299 @@
             opacity: 0;
             pointer-events: none;
         }
+
         @keyframes flashEffect {
             0% { opacity: 0; }
             20% { opacity: 1; }
             100% { opacity: 0; }
         }
 
-        /* KARTU UTAMA */
-        .container {
-            background: var(--card-dark);
+        /* CONTAINER UTAMA & KARTU (PAGES) */
+        .main-container {
             width: 90%;
-            max-width: 420px;
-            padding: 40px 30px;
-            border-radius: 20px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(212, 175, 55, 0.05);
-            text-align: center;
+            max-width: 440px;
             position: relative;
-            display: none;
-            z-index: 10;
         }
-        .container.active { display: block; animation: fadeIn 0.8s ease forwards; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .page {
+            background-color: var(--card-dark);
+            border: 1px solid rgba(223, 175, 55, 0.2);
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
 
-        h1, h2, h3 {
+        .page.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* GAYA TEKS */
+        h1, h2 {
             font-family: 'Cinzel', serif;
             color: var(--gold);
             letter-spacing: 2px;
             margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(223,175,55,0.3);
+        }
+        h1 { font-size: 1.8rem; }
+        h2 { font-size: 1.5rem; }
+
+        p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 30px;
         }
 
-        p { line-height: 1.6; color: var(--text-muted); font-size: 0.95rem; margin-bottom: 25px; }
-
+        /* TOMBOL */
         .btn-gold {
-            background: transparent;
-            color: var(--gold);
-            border: 1px solid var(--gold);
-            padding: 12px 30px;
-            font-family: 'Cinzel', serif;
+            background: linear-gradient(135deg, #dfaf37 0%, #b8860b 100%);
+            color: #0d0d11;
+            border: none;
+            padding: 14px 28px;
             font-size: 0.9rem;
-            letter-spacing: 2px;
-            border-radius: 4px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 30px;
             cursor: pointer;
-            transition: all 0.4s ease;
-            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(223,175,55,0.3);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         .btn-gold:hover {
-            background: var(--gold);
-            color: var(--bg-dark);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(223,175,55,0.5);
+            background: linear-gradient(135deg, #f3e5ab 0%, #dfaf37 100%);
         }
+        .btn-gold:active { transform: translateY(1px); }
 
         /* HALAMAN 1: KADO */
-        .gift-box {
-            font-size: 80px;
+        .gift-box-wrapper {
+            margin: 20px 0;
             cursor: pointer;
-            transition: transform 0.3s;
-            margin: 30px 0;
-            display: inline-block;
-            animation: pulse 2s infinite;
+            perspective: 600px;
         }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .gift-box-wrapper img {
+            width: 130px;
+            height: 130px;
+            transition: transform 0.5s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .gift-box-wrapper:hover img {
+            transform: scale(1.08) rotate(3deg);
+        }
 
-        /* HALAMAN 2: MUSIK */
-        .music-option {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(212, 175, 55, 0.1);
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-align: left;
+        /* HALAMAN 2: PEMUTAR MUSIK (VINYL) */
+        .music-selection {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
         }
-        .music-option:hover { background: rgba(212, 175, 55, 0.1); border-color: var(--gold); }
-        
-        .lyric-box {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.3);
+        .btn-music {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(223, 175, 55, 0.15);
+            color: var(--text-light);
+            padding: 12px 20px;
             border-radius: 8px;
-            border-left: 3px solid var(--gold);
-            min-height: 80px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: left;
             display: flex;
             align-items: center;
+            justify-content: space-between;
+        }
+        .btn-music:hover {
+            background: rgba(223, 175, 55, 0.08);
+            border-color: var(--gold);
+        }
+        .btn-music .track-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .btn-music .track-title { font-weight: 600; color: var(--gold); font-size: 0.95rem; }
+        .btn-music .track-artist { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+
+        .vinyl-container {
+            margin: 30px auto;
+            position: relative;
+            width: 140px; height: 140px;
+        }
+        .vinyl {
+            width: 100%; height: 100%;
+            background: radial-gradient(circle, #2c2c35 20%, #111 21%, #111 25%, #050505 26%, #1a1a24 70%);
+            border-radius: 50%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            display: flex;
             justify-content: center;
-            font-style: italic;
-            font-size: 0.9rem;
-            color: #fff;
-            line-height: 1.5;
-        }
-
-        /* PIRINGAN HITAM */
-        .vinyl-player {
-            position: fixed;
-            bottom: 20px; right: 20px;
-            width: 70px; height: 70px;
-            background: radial-gradient(circle, #333 30%, #111 70%);
-            border-radius: 50%;
-            border: 2px solid #000;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            display: none;
-            z-index: 100;
-        }
-        .vinyl-inner {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 24px; height: 24px;
-            background: var(--gold);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .vinyl-player.playing { animation: rotateVinyl 4s linear infinite; display: block; }
-        @keyframes rotateVinyl { to { transform: rotate(360deg); } }
-
-        /* HALAMAN 3: KOTAK SURAT */
-        .mailbox-layout {
-            display: flex;
             align-items: center;
-            gap: 20px;
-            text-align: left;
-            background: rgba(255,255,255,0.02);
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px dashed rgba(212,175,55,0.2);
         }
-        .mailbox-icon {
-            font-size: 55px;
-            cursor: pointer;
-            animation: bounce 2s infinite;
+        .vinyl::after {
+            content: '';
+            width: 35px; height: 35px;
+            background-color: var(--gold);
+            border-radius: 50%;
+            border: 4px solid #111;
         }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .vinyl.playing {
+            animation: spin 3.5s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* POPUP KUIS */
-        .popup {
+        .lyric-box {
+            min-height: 55px;
+            font-style: italic;
+            font-size: 0.88rem;
+            color: var(--gold-hover);
+            margin-top: 15px;
+            padding: 10px;
+            border-left: 2px solid var(--gold);
+            background: rgba(255,255,255,0.01);
+        }
+
+        /* HALAMAN 3: GALERI FILTER FOTO */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .photo-card {
+            background: #1c1c28;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+        .photo-placeholder {
+            width: 100%;
+            aspect-ratio: 4/5;
+            background: linear-gradient(135deg, #232330 0%, #171722 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--gold);
+            padding: 10px;
+        }
+        .photo-placeholder span { font-size: 2rem; margin-bottom: 5px; }
+        .photo-title {
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 8px 5px;
+            color: var(--text-light);
+            background: #14141d;
+        }
+
+        /* HALAMAN 4: SURAT RAHASIA & PIN LOCK */
+        .mailbox-wrapper {
+            margin: 40px 0;
+        }
+        .mailbox-btn {
+            font-size: 4rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            animation: wobble 2.5s ease infinite;
+            display: inline-block;
+        }
+        @keyframes wobble {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-4deg); }
+            75% { transform: rotate(4deg); }
+        }
+
+        /* POPUP MODAL DI HALAMAN SURAT */
+        .popup-modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
+            background: rgba(10, 10, 15, 0.95);
+            z-index: 3000;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 3000;
-            visibility: hidden; opacity: 0;
-            transition: 0.3s;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
         }
-        .popup.active { visibility: visible; opacity: 1; }
+        .popup-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
         .popup-content {
             background: var(--card-dark);
-            padding: 30px;
-            border-radius: 15px;
+            width: 88%;
+            max-width: 380px;
+            padding: 30px 25px;
+            border-radius: 16px;
             border: 1px solid var(--gold);
-            width: 85%; max-width: 360px;
             text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+            position: relative;
         }
-        .popup-content input {
-            width: 100%; padding: 12px; margin: 15px 0;
-            background: #111; border: 1px solid var(--gold);
-            color: #fff; text-align: center; border-radius: 4px;
-            font-size: 1rem;
+        .close-popup-btn {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: none; border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        .close-popup-btn:hover { color: #ff4d4d; }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            background: #1e1e2a;
+            border: 1px solid rgba(223, 175, 55, 0.3);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.95rem;
+            text-align: center;
+            margin-bottom: 20px;
+            font-family: inherit;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 8px rgba(223,175,55,0.2);
         }
 
-        .countdown {
-            color: #ff4d4d; font-weight: bold; font-size: 1.1rem; margin: 10px 0;
-            letter-spacing: 1px;
-        }
-        
         .secret-text-box {
-            background: #0d0d11;
-            padding: 15px;
+            background: #1b1b26;
             border-radius: 8px;
-            border: 1px dashed var(--gold);
+            padding: 20px 15px;
             text-align: left;
+            max-height: 240px;
+            overflow-y: auto;
+            border-left: 3px solid var(--gold);
             font-size: 0.9rem;
             line-height: 1.6;
-            max-height: 180px;
-            overflow-y: auto;
-            margin-top: 10px;
+            color: #e2e2e8;
+            margin-bottom: 10px;
+        }
+        
+        .timer-badge {
+            font-size: 0.8rem;
+            color: #ff4d4d;
+            font-weight: 600;
+            margin-bottom: 15px;
         }
     </style>
 </head>
@@ -261,104 +374,135 @@
     <div class="bg-overlay"></div>
     <canvas id="roseCanvas"></canvas>
 
-    <!-- TRANSISI TIRAI -->
-    <div class="curtain-container" id="curtainContainer">
+    <div id="curtainContainer" class="curtain-container">
         <div class="curtain curtain-left"></div>
         <div class="curtain curtain-right"></div>
     </div>
-    <div class="flash-light" id="flashLight"></div>
+    <div id="flashLight" class="flash-light"></div>
 
-    <!-- PIRINGAN HITAM -->
-    <div class="vinyl-player" id="vinylPlayer"><div class="vinyl-inner"></div></div>
+    <div class="main-container">
 
-
-    <!-- ================= HALAMAN 1: KADO ================= -->
-    <div class="container active" id="page1">
-        <h1>A Special Present</h1>
-        <p>Ada sebuah kiriman paket misterius klasik eksklusif untukmu. Silakan ketuk kado di bawah ini untuk membukanya...</p>
-        <div class="gift-box" id="kotakKado" onclick="bukaKado()">🎁</div>
-        
-        <div id="greetingSection" style="display:none; animation: fadeIn 0.5s forwards;">
-            <h2>Selamat Kelulusan ya zya! ✨</h2>
-            <button class="btn-gold" onclick="keHalaman2()">Lanjutkan</button>
-        </div>
-    </div>
-
-
-    <!-- ================= HALAMAN 2: PILIHAN LAGU ================= -->
-    <div class="container" id="page2">
-        <h2>Pilih Musik Pengiring</h2>
-        <p>Agar suasananya lebih tenang dan elegan, silakan pilih salah satu alunan lagu di bawah ini:</p>
-        
-        <div class="music-option" onclick="putarLagu('interaksi')">🎵 Interaksi - Tulus</div>
-        <div class="music-option" onclick="putarLagu('glimpse')">🎵 Glimpse of Us - Joji</div>
-        <div class="music-option" onclick="putarLagu('mina')">🎵 Teruntuk Mina (Sped Up)</div>
-
-        <div class="lyric-box" id="lyricBox">Lirik lagu bagian reff akan muncul di sini...</div>
-        <button class="btn-gold" style="margin-top:25px;" onclick="keHalaman3Transitions()">Lanjutkan</button>
-    </div>
-
-
-    <!-- ================= HALAMAN 3: SURAT UTAMA & KOTAK MISTERI ================= -->
-    <div class="container" id="page3">
-        <h2>Happy Graduation</h2>
-        <p>Selamat atas kelulusannya ya zya! Perjalanan panjang yang penuh dedikasi akhirnya berbuah manis hari ini. Sukses terus ke depannya!</p>
-        
-        <div class="mailbox-layout">
-            <!-- Kotak Surat Sebelah Kiri -->
-            <div class="mailbox-icon" onclick="bukaKuisPopup()">📮</div>
-            <div>
-                <h3 style="font-size:1rem; margin-bottom:5px;">Kotak Surat Terkunci</h3>
-                <p style="margin-bottom: 0; font-size:0.85rem;">Ketuk ikon kotak surat untuk menyelesaikan tantangan kuis dan memasukkan PIN pengaman.</p>
-            </div>
-        </div>
-        
-        <button class="btn-gold" style="margin-top:25px;" onclick="keHalaman4()">Halaman Terakhir</button>
-    </div>
-
-
-    <!-- ================= HALAMAN 4: KATA PENUTUP ================= -->
-    <div class="container" id="page4">
-        <h2>The Journey Ahead</h2>
-        <p>Semoga lembaran baru pasca kelulusan ini membawa banyak kebahagiaan, petualangan seru, dan kesuksesan yang luar biasa dalam hidupmu.</p>
-        <p style="color: var(--gold); font-family: 'Cinzel', serif; font-size: 1.1rem; margin-top: 30px;">- Selesai -</p>
-    </div>
-
-
-    <!-- ================= POPUP: KUIS & PIN LOCK ================= -->
-    <div class="popup" id="quizPopup">
-        <div class="popup-content">
-            <h3 id="popupTitle">Selesaikan Tantangan</h3>
+        <div id="page1" class="page active">
+            <h1>A Special Present</h1>
+            <p>Ada sebuah kiriman paket misterius klasik eksklusif untukmu. Silakan ketuk kado di bawah ini untuk membukanya...</p>
             
-            <!-- Waktu Hitung Mundur -->
-            <div class="countdown" id="timerDisplay">Waktu Tersisa: 00:45</div>
+            <div id="kotakKado" class="gift-box-wrapper" onclick="bukaKado()">
+                <img src="https://cdn-icons-png.flaticon.com/512/2650/2650718.png" alt="Gift Box">
+            </div>
 
-            <!-- Area Pertanyaan Kuis -->
+            <div id="greetingSection" style="display:none; animation: fadeIn 0.8s ease forwards;">
+                <h2 style="color: #ffdd67; margin-top: 10px;">Happy Graduation, Zya! 🎉</h2>
+                <p>Selamat atas kelulusannya ya! Perjalanan indah baru saja dimulai. Aku punya sesuatu yang spesial lagi untuk merayakannya di halaman selanjutnya...</p>
+                <button class="btn-gold" onclick="keHalaman2()">Lanjutkan ✨</button>
+            </div>
+        </div>
+
+        <div id="page2" class="page">
+            <h2>Musical Memories</h2>
+            <p>Pilihlah salah satu melodi lagu di bawah ini untuk menemani momen perayaan kelulusanmu hari ini:</p>
+            
+            <div class="music-selection">
+                <button class="btn-music" onclick="putarLagu('interaksi')">
+                    <div class="track-info">
+                        <span class="track-title">Interaksi</span>
+                        <span class="track-artist">Tulus</span>
+                    </div>
+                    <span>🎵</span>
+                </button>
+                <button class="btn-music" onclick="putarLagu('glimpse')">
+                    <div class="track-info">
+                        <span class="track-title">Glimpse of Us</span>
+                        <span class="track-artist">Joji</span>
+                    </div>
+                    <span>🎵</span>
+                </button>
+                <button class="btn-music" onclick="putarLagu('mina')">
+                    <div class="track-info">
+                        <span class="track-title">Melodi Khusus Zya</span>
+                        <span class="track-artist">Klasik Kotak Musik</span>
+                    </div>
+                    <span>🎵</span>
+                </button>
+            </div>
+
+            <div class="vinyl-container">
+                <div id="vinylPlayer" class="vinyl"></div>
+            </div>
+
+            <div id="lyricBox" class="lyric-box">
+                (Silakan pilih lagu di atas untuk memutar kutipan lirik dan menghidupkan piringan hitam...)
+            </div>
+
+            <button class="btn-gold" style="margin-top: 25px; width: 100%;" onclick="keHalaman3Transitions()">Buka Album Foto 📸</button>
+        </div>
+
+        <div id="page3" class="page">
+            <h2>Graduation Spotlight</h2>
+            <p>Deretan konsep frame estetik dan filter cinematic yang dirancang khusus untuk menyimpan foto kenangan wisudamu:</p>
+            
+            <div class="gallery-grid">
+                <div class="photo-card">
+                    <div class="photo-placeholder"><span>🎓</span>Pure Elegance</div>
+                    <div class="photo-title">Cinematic Gold</div>
+                </div>
+                <div class="photo-card">
+                    <div class="photo-placeholder"><span>✨</span>Classic Glow</div>
+                    <div class="photo-title">Vintage Aesthetic</div>
+                </div>
+                <div class="photo-card">
+                    <div class="photo-placeholder"><span>🌸</span>Soft Rose</div>
+                    <div class="photo-title">Pastel Memory</div>
+                </div>
+                <div class="photo-card">
+                    <div class="photo-placeholder"><span>🌌</span>Deep Night</div>
+                    <div class="photo-title">Midnight Studio</div>
+                </div>
+            </div>
+
+            <button class="btn-gold" style="width: 100%;" onclick="keHalaman4()">Buka Kotak Surat ✉️</button>
+        </div>
+
+        <div id="page4" class="page">
+            <h2>The Secret Mailbox</h2>
+            <p>Terakhir, ada sebuah kotak surat lama yang terkunci rapat. Ketuk surat di bawah ini untuk mencoba memecahkan kuis teka-teki enkripsinya:</p>
+            
+            <div class="mailbox-wrapper">
+                <button class="mailbox-btn" onclick="bukaKuisPopup()">✉️</button>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--gold);">*Petunjuk PIN tersimpan rapi di momen waktu malam hari jam kembar terindah.</p>
+        </div>
+
+    </div>
+
+    <div id="quizPopup" class="popup-modal">
+        <div class="popup-content">
+            <button class="close-popup-btn" onclick="tutupPopup()">✕</button>
+            <h2 id="popupTitle" style="font-size: 1.3rem; margin-bottom: 15px;">Selesaikan Tantangan</h2>
+            
+            <div id="timerDisplay" class="timer-badge">Waktu Tersisa: 00:45</div>
+
             <div id="quizArea">
-                <p id="questionText" style="color:#fff; font-weight:600; margin-bottom:10px;"></p>
-                <input type="text" id="quizAnswer" placeholder="Jawaban kamu (angka)...">
-                <button class="btn-gold" onclick="jawabKuis()">Kirim Jawaban</button>
+                <p id="questionText" style="font-size: 0.88rem; margin-bottom: 20px; text-align: left;"></p>
+                <input type="text" id="quizAnswer" class="input-field" placeholder="Masukkan jawaban kamu (Angka)...">
+                <button class="btn-gold" style="width: 100%;" onclick="jawabKuis()">Kirim Jawaban</button>
             </div>
 
-            <!-- Area Input PIN -->
             <div id="pinArea" style="display:none;">
-                <p style="font-size:0.9rem;">Kuis Berhasil! Sekarang masukkan PIN Keamanan untuk membuka dokumen:</p>
-                <input type="password" id="pinInput" placeholder="Masukkan PIN Kunci...">
-                <button class="btn-gold" onclick="verifikasiPin()">Buka Kotak Surat</button>
+                <p style="font-size:0.9rem; margin-bottom:15px;">Kuis Berhasil! Sekarang masukkan PIN Keamanan Utama untuk membuka segel amplop:</p>
+                <input type="password" id="pinInput" class="input-field" placeholder="Masukkan PIN Kunci...">
+                <button class="btn-gold" style="width: 100%;" onclick="verifikasiPin()">Buka Kotak Surat</button>
             </div>
 
-            <!-- Tempat Menampilkan Isi Surat Rahasia Setelah PIN Sukses -->
             <div id="secretLetterArea" style="display:none;">
                 <div class="secret-text-box">
                     <strong>Hai zya 🫶</strong><br><br>
-                    Ini adalah pesan rahasia yang sengaja aku sembunyiin di sini. bentar kok kamu tau kodenya? 🤔<br><br>
-                    Aku cuma mau bilang terimakasih ya zya, kamu udah mau nemenin aku pas aku hampir nyerah, terimakasih sudah membuat hari hariku seru kembali.<br>
-                    Makasih ya kamu udah bikin aku semangat lagi, aku doain semoga yang kamu inginkan semuanya tercapai, semoga kamu sehat selalu.<br>
-                    Kamu gak usah mikirin kabar aku ya 🙂, kamu pikirin aja yang penting bagimu dan masa depanmu, aku akan selalu mendukungmu dari sini. lain kali kasi tau aku ya nama asli kamu 😊 biar aku gak pake nama panggilan lagi. 
+                    Ini adalah pesan rahasia yang sengaja aku sembunyiin di sini. bentar kok ga panjang lebar hehe.
+                    Aku cuma mau bilang terinasih ya zya, kamu udah mau nemenin aku pas aku lagi kesepian ataupun bosen.
+                    Makasih ya kamu udah bikin aku semangat lagi, aku doain semoga yang kamu cita-citakan tercapai semua ya.
+                    Kamu gak usah mikirin kabar aku ya 🙂, kamu pikirin aja yang penting bagi kamu sekarang okey, luv u.
                 </div>
+                <button id="btnBatal" class="btn-gold" style="border-color:#ff4d4d; color:#ff4d4d; background:none; box-shadow:none; width:100%; margin-top:10px;" onclick="tutupPopup()">Tutup Surat</button>
             </div>
-            
-            <button id="btnBatal" class="btn-gold" style="border-color:#ff4d4d; color:#ff4d4d; padding:5px 15px; margin-top:20px; font-size:0.75rem;" onclick="tutupPopup()">Batal / Tutup</button>
         </div>
     </div>
 
@@ -401,121 +545,5 @@
             draw() {
                 ctx.save();
                 ctx.translate(this.x, this.y);
-                ctx.rotate(this.rotation);
-                ctx.globalAlpha = this.alpha;
-                
-                ctx.fillStyle = '#660011';
-                ctx.beginPath(); ctx.arc(0, 0, this.size, 0, Math.PI * 2); ctx.fill();
-                ctx.fillStyle = '#cc1122';
-                ctx.beginPath(); ctx.arc(0, 0, this.size * 0.6, 0, Math.PI * 2); ctx.fill();
-                ctx.fillStyle = '#990011';
-                ctx.beginPath(); ctx.arc(-this.size*0.15, -this.size*0.15, this.size * 0.3, 0, Math.PI * 2); ctx.fill();
-                
-                ctx.restore();
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.rotation += this.rotSpeed;
-                if (this.isExplosion) {
-                    this.alpha -= 0.015;
-                }
-            }
-        }
-
-        for (let i = 0; i < 65; i++) {
-            roses.push(new Rose(false));
-        }
-
-        function animir() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            roses.forEach((rose, index) => {
-                rose.update();
-                rose.draw();
-                if (rose.alpha <= 0) roses.splice(index, 1);
-            });
-            requestAnimationFrame(animir);
-        }
-        animir();
-
-        setTimeout(() => {
-            roses = [];
-            for (let i = 0; i < 130; i++) {
-                roses.push(new Rose(true));
-            }
-        }, 1400);
-
-
-        // --- 2. LOGIKA NAVIGASI ---
-        function pindahHalaman(idHalamanSekarang, idHalamanTujuan) {
-            document.getElementById(idHalamanSekarang).classList.remove('active');
-            document.getElementById(idHalamanTujuan).classList.add('active');
-        }
-
-        function bukaKado() {
-            document.getElementById('kotakKado').style.display = 'none';
-            document.getElementById('greetingSection').style.display = 'block';
-        }
-        function keHalaman2() {
-            pindahHalaman('page1', 'page2');
-        }
-
-        // --- 3. FITUR MUSIK & LIRIK ---
-        const daftarLirik = {
-            'interaksi': '“Manusia sekuat apa pun, bisa roboh juga... / Jika hati ini sudah tak sanggup menahan rasa interaksimu...”',
-            'glimpse': '“\'Cause sometimes I look in her eyes / And that\'s where I find a glimpse of us / And I try to fall for her touch...”',
-            'mina': '“Teruntuk Mina yang manis nan anggun, / Biarlah melodi ini berbisik lirih menggantikan hadirku di harimu...”'
-        };
-
-        function putarLagu(kunciLagu) {
-            document.getElementById('lyricBox').innerText = daftarLirik[kunciLagu];
-            document.getElementById('vinylPlayer').classList.add('playing');
-        }
-
-        function keHalaman3Transitions() {
-            const curtain = document.getElementById('curtainContainer');
-            const flash = document.getElementById('flashLight');
-            
-            curtain.classList.add('active');
-            
-            setTimeout(() => {
-                pindahHalaman('page2', 'page3');
-                curtain.classList.remove('active');
-                
-                flash.style.animation = "flashEffect 0.5s ease-out";
-                setTimeout(() => { flash.style.animation = ""; }, 500);
-            }, 1200);
-        }
-
-        function keHalaman4() {
-            pindahHalaman('page3', 'page4');
-        }
-
-
-        // --- 4. LOGIKA KUIS & PIN LOCK ---
-        let infoKuis = { pertanyaan: "Jika sebotol sirup harganya Rp15.000 dan mendapatkan diskon sebesar 20%, berapakah sisa uang kembalianmu jika membayar dengan selembar uang Rp20.000?", jawaban: "8000" };
-        let sisaWaktu = 45;
-        let intervalTimer;
-
-        function bukaKuisPopup() {
-            document.getElementById('quizPopup').classList.add('active');
-            document.getElementById('questionText').innerText = infoKuis.pertanyaan;
-            document.getElementById('timerDisplay').style.display = 'block';
-            sisaWaktu = 45;
-            
-            clearInterval(intervalTimer);
-            intervalTimer = setInterval(() => {
-                sisaWaktu--;
-                document.getElementById('timerDisplay').innerText = `Waktu Tersisa: 00:${sisaWaktu < 10 ? '0' + sisaWaktu : sisaWaktu}`;
-                if (sisaWaktu <= 0) {
-                    clearInterval(intervalTimer);
-                    alert("Waktu habis! Kotak surat terkunci kembali otomatis.");
-                    tutupPopup();
-                }
-            }, 1000);
-        }
-
-        function tutupPopup() {
-            clearInterval(intervalTimer);
-            document.getElementById('qui
+                ctx.r
+ 
